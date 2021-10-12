@@ -36,6 +36,7 @@ BEGIN
       WHERE (CASE
                WHEN _forwards THEN __schema__.messages.position >= _position
                ELSE __schema__.messages.position <= _position END)
+            AND __schema__.messages.tx_id < txid_snapshot_xmin(txid_current_snapshot())
       ORDER BY
           (CASE WHEN _forwards THEN __schema__.messages.position END),
           (CASE WHEN not _forwards THEN __schema__.messages.position END) DESC
